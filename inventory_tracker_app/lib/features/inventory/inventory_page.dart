@@ -28,27 +28,26 @@ class InventoryPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Mi Inventario"),
+        elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart),
+            icon: const Icon(Icons.shopping_cart_outlined),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const BuyPage()),
               );
             },
           ),
-
           IconButton(
-            icon: const Icon(Icons.receipt_long),
+            icon: const Icon(Icons.receipt_long_outlined),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const PurchaseHistoryPage()),
               );
             },
           ),
-
-          // Logout
           IconButton(
+            icon: const Icon(Icons.logout),
             onPressed: () async {
               await ref.read(authControllerProvider.notifier).logout();
               if (context.mounted) {
@@ -57,48 +56,103 @@ class InventoryPage extends ConsumerWidget {
                 );
               }
             },
-            icon: const Icon(Icons.logout),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _openAddDialog(context, ref),
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
+        label: const Text("Agregar"),
       ),
+
       body: state.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text("Error: $e")),
+
         data: (items) {
+
           if (items.isEmpty) {
-            return const Center(child: Text("No tienes productos aún."));
+            return const Center(
+              child: Text(
+                "No tienes productos aún.",
+                style: TextStyle(fontSize: 16),
+              ),
+            );
           }
-          return ListView.separated(
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
             itemCount: items.length,
-            separatorBuilder: (_, __) => const Divider(height: 1),
+
             itemBuilder: (_, i) {
+
               final it = items[i];
-              return ListTile(
-                title: Text(it.name),
-                subtitle: Text("${it.quantity} ${it.unit}"),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () => _openEditDialog(
-                        context,
-                        ref,
-                        it.id,
-                        it.name,
-                        it.unit,
-                        it.quantity,
+
+              return Card(
+                margin: const EdgeInsets.only(bottom: 12),
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+
+                child: ListTile(
+
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+
+                  leading: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(.12),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(Icons.inventory_2_outlined),
+                  ),
+
+                  title: Text(
+                    it.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text("${it.quantity} ${it.unit}"),
+                  ),
+
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+
+                      IconButton(
+                        icon: const Icon(Icons.edit_outlined),
+                        onPressed: () => _openEditDialog(
+                          context,
+                          ref,
+                          it.id,
+                          it.name,
+                          it.unit,
+                          it.quantity,
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => _confirmDelete(context, ref, it.id, it.name),
-                    ),
-                  ],
+
+                      IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () => _confirmDelete(
+                          context,
+                          ref,
+                          it.id,
+                          it.name,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
@@ -108,7 +162,6 @@ class InventoryPage extends ConsumerWidget {
     );
   }
 
-  // ✅ FIX: Dropdown ahora funciona (StatefulBuilder)
   Future<void> _openAddDialog(BuildContext context, WidgetRef ref) async {
     final nameCtrl = TextEditingController();
     final qtyCtrl = TextEditingController(text: "1");
@@ -126,7 +179,7 @@ class InventoryPage extends ConsumerWidget {
                 children: [
                   TextField(
                     controller: nameCtrl,
-                    decoration: const InputDecoration(labelText: "Nombre (ej. Cebolla)"),
+                    decoration: const InputDecoration(labelText: "Nombre"),
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -205,7 +258,6 @@ class InventoryPage extends ConsumerWidget {
     }
   }
 
-  // ✅ FIX: Dropdown ahora funciona (StatefulBuilder)
   Future<void> _openEditDialog(
     BuildContext context,
     WidgetRef ref,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'core/app_theme.dart';
 import 'features/auth/login_page.dart';
 
 class App extends StatelessWidget {
@@ -7,9 +8,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Inventory Tracker",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
+      theme: AppTheme.light,
       home: const LoginPage(),
     );
   }
