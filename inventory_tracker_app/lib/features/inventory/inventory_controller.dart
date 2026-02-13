@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../auth/auth_controller.dart';
+import '../../core/api_client.dart';
 import 'inventory_models.dart';
 import 'inventory_service.dart';
 
@@ -15,6 +15,7 @@ final inventoryControllerProvider =
 
 class InventoryController extends StateNotifier<AsyncValue<List<InventoryItem>>> {
   final Ref ref;
+
   InventoryController(this.ref) : super(const AsyncLoading()) {
     load();
   }
@@ -47,28 +48,26 @@ class InventoryController extends StateNotifier<AsyncValue<List<InventoryItem>>>
   }
 
   Future<void> delete(int id) async {
-  await ref.read(inventoryServiceProvider).deleteItem(id);
-  await load();
-}
+    await ref.read(inventoryServiceProvider).deleteItem(id);
+    await load();
+  }
 
-Future<void> update(int id, String name, String unit, String qty) async {
-  await ref.read(inventoryServiceProvider).updateItem(
-        id: id,
-        name: name,
-        unit: unit,
-        quantity: qty,
-      );
-  await load();
-}
+  Future<void> update(int id, String name, String unit, String qty) async {
+    await ref.read(inventoryServiceProvider).updateItem(
+          id: id,
+          name: name,
+          unit: unit,
+          quantity: qty,
+        );
+    await load();
+  }
 
-Future<void> confirmPurchase(String name, String unit, String qty) async {
-  await ref.read(inventoryServiceProvider).purchaseConfirm(
-        name: name,
-        unit: unit,
-        quantity: qty,
-      );
-  await load();
-}
-
-
+  Future<void> confirmPurchase(String name, String unit, String qty) async {
+    await ref.read(inventoryServiceProvider).purchaseConfirm(
+          name: name,
+          unit: unit,
+          quantity: qty,
+        );
+    await load();
+  }
 }

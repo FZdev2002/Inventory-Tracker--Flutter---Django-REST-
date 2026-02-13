@@ -4,6 +4,7 @@ import '../auth/auth_controller.dart';
 import '../auth/login_page.dart';
 import 'inventory_controller.dart';
 import 'buy_page.dart';
+import '../purchases/purchase_history_page.dart';
 
 class InventoryPage extends ConsumerWidget {
   const InventoryPage({super.key});
@@ -28,12 +29,20 @@ class InventoryPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Mi Inventario"),
         actions: [
-          // ✅ Botón para ir a Comprar (BuyPage)
           IconButton(
             icon: const Icon(Icons.shopping_cart),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const BuyPage()),
+              );
+            },
+          ),
+
+          IconButton(
+            icon: const Icon(Icons.receipt_long),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const PurchaseHistoryPage()),
               );
             },
           ),
