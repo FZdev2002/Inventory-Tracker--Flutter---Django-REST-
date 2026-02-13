@@ -122,7 +122,7 @@ Proyecto creado con Visual Studio Code.
 
 Para usar emuladores Android fue necesario instalar:
 
-Android Studio (Android Emulator)
+* Android Studio (Android Emulator)
 
 ---
 
