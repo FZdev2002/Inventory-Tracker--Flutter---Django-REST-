@@ -128,13 +128,17 @@ Para usar emuladores Android fue necesario instalar:
 
 ## Instalar dependencias
 
+```bash
 flutter pub get
+```
 
 ---
 
 ## Ver dispositivos disponibles
 
+```bash
 flutter devices
+```
 
 ---
 
@@ -146,7 +150,9 @@ flutter run
 
 ## Ejecutar en navegador:
 
+```bash
 flutter run -d Chrome
+```
 
 ---
 
@@ -171,17 +177,6 @@ http://localhost:8000
 ## Celular físico:
 
 http://IP_DE_TU_PC:8000
-
----
-
-# Funciones
-
-* Login JWT.
-* Registro de usuario.
-* Inventario CRUD.
-* Compra inteligente con validación previa.
-* Merge automático de productos duplicados.
-* Historial de compras.
 
 ---
 
